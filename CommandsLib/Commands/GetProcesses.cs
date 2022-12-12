@@ -5,7 +5,7 @@ namespace TaskManagerCommandsLib.Commands
     {
         public string CommandInfo()
         {
-            return "возвращает список запущенных процессов с id  и именем";
+            return "Возвращает список запущенных процессов с id  и именем";
         }
         Dictionary<string, string> _commands = new Dictionary<string, string>()
         {
@@ -22,10 +22,20 @@ namespace TaskManagerCommandsLib.Commands
         public string Execute(string[] args)
         {
             string str = "";
-            Process[] procList = Process.GetProcesses();
-            foreach (Process proc in procList)
+            try
             {
-                str += proc.Id.ToString()+ "\t" + proc.ProcessName.ToString() + "\n";
+
+
+
+                Process[] procList = Process.GetProcesses();
+                foreach (Process proc in procList)
+                {
+                    str += proc.Id.ToString() + "\t" + proc.ProcessName.ToString() + "\n";
+                }
+            }
+            catch (Exception ex)
+            {
+                str = ex.Message;
             }
             return str;
         }

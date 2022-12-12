@@ -1,13 +1,20 @@
 using TaskManagerCommandsLib;
 using System.Diagnostics;
-namespace TaskManagerWinAPI;
+using System.ComponentModel.Design;
+using TaskManagerCommandsLib.Commands;
 
 public partial class Form1 : Form
 {
     Manager manager = new Manager();
+    StartProcess process = new StartProcess();
     public Form1()
     {
         InitializeComponent();
+    }
+    private void Form1_Load(object sender, EventArgs e)
+    {
+        LoadTable();
+        ListBox_1.Items.AddRange(process.ReturnAppsNames());
     }
     private void LoadTable()
     {
@@ -22,21 +29,33 @@ public partial class Form1 : Form
 
         }
     }
+
     private void button1_Click(object sender, EventArgs e)
     {
         LoadTable();
     }
-    
+
     private void button2_Click(object sender, EventArgs e)
     {
         int currentRow = Convert.ToInt32(dataGridView1.CurrentCell.RowIndex);
-        manager.ExecuteCommand("KP " + (dataGridView1[0, currentRow]).ToString());
+        manager.ExecuteCommand("KP " + (dataGridView1[0, currentRow]).Value.ToString());
         LoadTable();
     }
-  
+
     private void button3_Click_1(object sender, EventArgs e)
     {
-        manager.ExecuteCommand("KP" + dataGridView1[1, Convert.ToInt32(dataGridView1.CurrentCell.RowIndex)].ToString());
+        int currentRow = Convert.ToInt32(dataGridView1.CurrentCell.RowIndex);
+        manager.ExecuteCommand("KP " + dataGridView1[1, currentRow].Value.ToString());
         LoadTable();
+    }
+
+    private void StartProcess_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void button4_Click(object sender, EventArgs e)
+    {
+        manager.ExecuteCommand("SP " + ListBox_1.SelectedItem.ToString());
     }
 }
